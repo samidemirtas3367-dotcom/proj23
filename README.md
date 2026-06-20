@@ -94,7 +94,7 @@
 
         #crosshair { position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; background-color: rgba(255, 255, 255, 0.9); border-radius: 50%; transform: translate(-50%, -50%); }
 
-        /* MOBİL KONTROLLER */
+        /* MOBİL KONTROLLER (YAN EKRAN VE DOKUNMATİK DESTEĞİ DÜZELTİLDİ) */
         #mobile-controls { display: none; position: absolute; bottom: 20px; left: 0; width: 100%; pointer-events: none; z-index: 60; }
         .d-pad { position: absolute; left: 20px; bottom: 10px; width: 150px; height: 150px; }
         .m-btn {
@@ -108,7 +108,10 @@
         #btn-left { top: 50px; left: 0; } #btn-right { top: 50px; right: 0; }
         #btn-jump { position: absolute; right: 30px; bottom: 30px; width: 70px; height: 70px; border-radius: 50%; font-weight: bold; background: rgba(34, 197, 94, 0.4); border-color: var(--success); pointer-events: auto; }
 
-        @media (max-width: 768px) { #mobile-controls { display: block; } #crosshair { display: none; } }
+        @media (max-width: 1024px), (max-height: 500px), (hover: none) and (pointer: coarse) { 
+            #mobile-controls { display: block; } 
+            #crosshair { display: none; } 
+        }
 
         /* RANK UP MODAL */
         #rank-up-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 99999; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 50px; }
@@ -178,6 +181,8 @@
     <button class="big-btn" onclick="showScreen('settings-menu')">⚙️ SETTINGS</button>
     <button class="big-btn" onclick="toggleConsole()" style="border-color: var(--term-green); color: var(--term-green);">💻 SECRET CONSOLE</button>
     
+    <button class="big-btn" onclick="toggleFullScreen()" style="border-color: #22c55e; color: #22c55e; margin-top: 15px;">🔲 FULLSCREEN</button>
+    
     <p style="color: var(--text-muted); margin-top: 20px; font-weight: bold; text-align: center;">
         When you complete the game 5 times, the system will give you<br>a special secret cheat code from the console.
     </p>
@@ -204,7 +209,10 @@
 </div>
 
 <div id="game-ui">
-    <div class="ui-top"><button class="nav-btn" onclick="exitGame()">ESC - QUIT</button></div>
+    <div class="ui-top">
+        <button class="nav-btn" onclick="exitGame()">ESC - QUIT</button>
+        <button class="nav-btn" onclick="toggleFullScreen()">🔲 FULLSCREEN</button>
+    </div>
     <div class="hud-stats">Wins: <span id="ui-wins">0</span>/5 | Coins: <span id="ui-coins">0</span></div>
     <div id="crosshair"></div>
 </div>
@@ -240,6 +248,21 @@
 <div id="toast">Notification!</div>
 
 <script>
+    /* ========================================
+       FULLSCREEN SYSTEM
+       ======================================== */
+    function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                console.log(`Error attempting to enable full-screen mode: ${err.message}`);
+            });
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    }
+
     /* ========================================
        RANK SYSTEM (CS2)
        ======================================== */
